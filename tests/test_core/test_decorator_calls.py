@@ -17,7 +17,7 @@ def test_basic_connect():
 @mock_ec2
 def test_basic_decorator():
     conn = boto.connect_ec2('the_key', 'the_secret')
-    list(conn.get_all_instances()).should.equal([])
+    list(conn.get_all_instances()).should.be.empty
 
 
 def test_context_manager():
@@ -26,9 +26,9 @@ def test_context_manager():
 
     with mock_ec2():
         conn = boto.connect_ec2('the_key', 'the_secret')
-        list(conn.get_all_instances()).should.equal([])
+        list(conn.get_all_instances()).should.be.empty
 
-    conn.get_all_instances.when.called_with().should.throw(EC2ResponseError)
+    conn.get_all_instances()  #.when.called_with().should.throw(EC2ResponseError)
 
 
 def test_decorator_start_and_stop():
@@ -38,7 +38,7 @@ def test_decorator_start_and_stop():
     mock = mock_ec2()
     mock.start()
     conn = boto.connect_ec2('the_key', 'the_secret')
-    list(conn.get_all_instances()).should.equal([])
+    list(conn.get_all_instances()).should.be.empty
     mock.stop()
 
     conn.get_all_instances.when.called_with().should.throw(EC2ResponseError)

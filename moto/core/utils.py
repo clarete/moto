@@ -2,8 +2,6 @@ import inspect
 import random
 import re
 
-from flask import request
-
 
 def camelcase_to_underscores(argument):
     ''' Converts a camelcase param like theNewAttribute to the equivalent
@@ -31,44 +29,8 @@ def get_random_hex(length=8):
 
 
 def get_random_message_id():
-    return '{}-{}-{}-{}-{}'.format(get_random_hex(8), get_random_hex(4), get_random_hex(4), get_random_hex(4), get_random_hex(12))
-
-
-def convert_regex_to_flask_path(url_path):
-    """
-    Converts a regex matching url to one that can be used with flask
-    """
-    for token in ["$"]:
-        url_path = url_path.replace(token, "")
-
-    def caller(reg):
-        match_name, match_pattern = reg.groups()
-        return '<regex("{0}"):{1}>'.format(match_pattern, match_name)
-
-    url_path = re.sub("\(\?P<(.*?)>(.*?)\)", caller, url_path)
-    return url_path
-
-
-class convert_flask_to_httpretty_response(object):
-    def __init__(self, callback):
-        self.callback = callback
-
-    @property
-    def __name__(self):
-        # For instance methods, use class and method names. Otherwise
-        # use module and method name
-        if inspect.ismethod(self.callback):
-            outer = self.callback.im_class.__name__
-        else:
-            outer = self.callback.__module__
-        return "{}.{}".format(outer, self.callback.__name__)
-
-    def __call__(self, args=None, **kwargs):
-        headers = dict(request.headers)
-        result = self.callback(request, request.url, headers)
-        # result is a status, headers, response tuple
-        status, headers, response = result
-        return response, status, headers
+    sizes = 8, 4, 4, 4, 12
+    return '{}-{}-{}-{}-{}'.format(*(get_random_hex(i) for i in sizes))
 
 
 def iso_8601_datetime(datetime):

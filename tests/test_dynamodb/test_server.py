@@ -5,7 +5,7 @@ import moto.server as server
 '''
 Test the different server responses
 '''
-server.configure_urls("dynamodb")
+# server.configure_urls("dynamodb")
 
 
 def test_table_list():

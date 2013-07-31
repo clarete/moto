@@ -1,9 +1,8 @@
 import functools
 import re
 
-from httpretty import HTTPretty
+from httpretty import httpretty
 from .responses import metadata_response
-from .utils import convert_regex_to_flask_path
 
 
 class MockAWS(object):
@@ -21,25 +20,25 @@ class MockAWS(object):
 
     def start(self):
         self.backend.reset()
-        HTTPretty.enable()
+        httpretty.enable()
 
-        for method in HTTPretty.METHODS:
+        for method in httpretty.METHODS:
             for key, value in self.backend.urls.iteritems():
-                HTTPretty.register_uri(
+                httpretty.register_uri(
                     method=method,
                     uri=re.compile(key),
                     body=value,
                 )
 
             # Mock out localhost instance metadata
-            HTTPretty.register_uri(
+            httpretty.register_uri(
                 method=method,
                 uri=re.compile('http://169.254.169.254/latest/meta-data/.*'),
                 body=metadata_response
             )
 
     def stop(self):
-        HTTPretty.disable()
+        httpretty.disable()
 
     def decorate_callable(self, func):
         def wrapper(*args, **kwargs):
@@ -92,18 +91,6 @@ class BaseBackend(object):
         for unformatted_path, handler in unformatted_paths.iteritems():
             path = unformatted_path.format("")
             paths[path] = handler
-
-        return paths
-
-    @property
-    def flask_paths(self):
-        """
-        The url paths that will be used for the flask server
-        """
-        paths = {}
-        for url_path, handler in self.url_paths.iteritems():
-            url_path = convert_regex_to_flask_path(url_path)
-            paths[url_path] = handler
 
         return paths
 

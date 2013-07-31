@@ -18,7 +18,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "boto",
-        "flask",
+        "Twisted",
         "httpretty>=0.6.1",
         "Jinja2",
     ],

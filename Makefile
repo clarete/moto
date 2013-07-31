@@ -5,6 +5,5 @@ init:
 	@pip install -r requirements.txt
 
 test:
-	rm -f .coverage
-	@nosetests -sv --with-coverage ./tests/
-
+	@rm -f .coverage
+	@nosetests -sv --with-coverage --rednose --force-color --immediate ./tests/

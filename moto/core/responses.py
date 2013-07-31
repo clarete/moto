@@ -13,8 +13,9 @@ class BaseResponse(object):
             # Boto
             self.body = request.body
         else:
-            # Flask server
-            self.body = request.data
+            # Twisted server
+            request.content.seek(0)
+            self.body = request.content.read()
 
         querystring = parse_qs(urlparse(full_url).query)
         if not querystring:
@@ -27,8 +28,14 @@ class BaseResponse(object):
         self.querystring = querystring
         self.method = request.method
 
-        self.headers = dict(request.headers)
-        self.response_headers = headers
+        self.headers = headers
+        self.response_headers = dict(request.headers)
+
+        # Adding a header required by httpretty
+        self.response_headers.update({
+            'server': 'Moto',
+        })
+
         return self.call_action()
 
     def call_action(self):
@@ -36,6 +43,7 @@ class BaseResponse(object):
         action = self.querystring.get('Action', [""])[0]
         action = camelcase_to_underscores(action)
         method_names = method_names_from_class(self.__class__)
+
         if action in method_names:
             method = getattr(self, action)
             response = method()
