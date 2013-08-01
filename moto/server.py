@@ -51,7 +51,16 @@ def main(argv=sys.argv[1:]):
     configure_urls(args.service)
 
     app.testing = True
-    app.run(host=args.host, port=args.port)
+
+    from tornado.wsgi import WSGIContainer
+    from tornado.httpserver import HTTPServer
+    from tornado.ioloop import IOLoop
+
+    http_server = HTTPServer(WSGIContainer(app))
+    http_server.listen(args.port)
+    IOLoop.instance().start()
+
+    # app.run(host=args.host, port=args.port)
 
 if __name__ == '__main__':
     main()
