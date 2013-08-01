@@ -6,5 +6,4 @@ init:
 
 test:
 	rm -f .coverage
-	@nosetests -sv --with-coverage ./tests/
-
+	@nosetests --rednose --force-color -sv ./tests

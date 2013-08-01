@@ -1,15 +1,13 @@
-import moto.server as server
-
 '''
 Test the different server responses
 '''
 
-server.configure_urls("dynamodb")
+from moto.testing import TestClient
 
 
 def test_missing_request():
     # Given that I have a test http client
-    test_client = server.app.test_client()
+    test_client = TestClient('dynamodb')
 
     # When I hit the root url of the dynamo handler
     res = test_client.get('/')
@@ -20,7 +18,7 @@ def test_missing_request():
 
 def test_table_list():
     # Given that I have a test http client
-    test_client = server.app.test_client()
+    test_client = TestClient('dynamodb')
 
     # When I hit the root url of the dynamo handler, sending the right headers
     headers = {'X-Amz-Target': 'TestTable.ListTables'}

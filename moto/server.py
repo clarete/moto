@@ -1,10 +1,70 @@
 import sys
 import argparse
 
+import tornado.web
+import tornado.httpserver
+import tornado.ioloop
+
+from moto.backends import BACKENDS
+
+
+class DynamicHandler(tornado.web.RequestHandler):
+    def initialize(self, handler):
+        self.handler = handler
+
+    def get(self, *args):
+        return 'Yo bro'
+
+
+class Server(tornado.httpserver.HTTPServer):
+    def __init__(self, mapping, socket=None, settings=None, **kwargs):
+
+        self.socket = socket
+
+        self.app = tornado.web.Application()
+
+        for path, handler in mapping.items():
+            self.app.add_handlers(
+                r'.*',  [(path, DynamicHandler, {'handler': handler})],
+            )
+
+        super(Server, self).__init__(self.app, **kwargs)
+
+    def listen(self):
+        super(Server, self).add_sockets([self.socket])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from flask import Flask
 from werkzeug.routing import BaseConverter
 
-from moto.backends import BACKENDS
 from moto.core.utils import convert_flask_to_httpretty_response
 
 app = Flask(__name__)
