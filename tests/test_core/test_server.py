@@ -1,15 +1,11 @@
-from mock import patch
-
+from mock import patch, Mock
 from moto.server import main
 
 
+@patch('sys.stderr', Mock())    # Supressing argparse complaints
 def test_wrong_arguments():
-    try:
-        main(["name", "test1", "test2", "test3"])
-        assert False, ("main() when called with the incorrect number of args"
-                       " should raise a system exit")
-    except SystemExit:
-        pass
+    (main.when.called_with(["name", "test1", "test2", "test3"])
+     .should.throw(SystemExit))
 
 
 @patch('moto.server.app.run')

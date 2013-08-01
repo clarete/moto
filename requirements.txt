@@ -1,7 +1,10 @@
+# prodz
+requests
+
+# tests
 coverage
 freezegun
 mock
 nose
 https://github.com/spulec/python-coveralls/tarball/796d9dba34b759664e42ba39e6414209a0f319ad
-requests
-sure
+https://codeload.github.com/gabrielfalcao/sure/tar.gz/1915244f04f5e9d45ebfb470701ee63a34f9db11
