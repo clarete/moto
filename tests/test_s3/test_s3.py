@@ -7,7 +7,6 @@ from boto.s3.key import Key
 from freezegun import freeze_time
 import requests
 
-import sure  # flake8: noqa
 
 from moto import mock_s3
 

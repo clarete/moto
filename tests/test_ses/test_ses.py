@@ -3,7 +3,6 @@ import email
 import boto
 from boto.exception import BotoServerError
 
-import sure  # flake8: noqa
 
 from moto import mock_ses
 

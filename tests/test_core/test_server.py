@@ -1,5 +1,4 @@
 from mock import patch
-import sure  # flake8: noqa
 
 from moto.server import main
 

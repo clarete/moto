@@ -1,5 +1,4 @@
 import boto
-import sure  # flake8: noqa
 from freezegun import freeze_time
 import requests
 

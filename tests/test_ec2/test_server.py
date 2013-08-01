@@ -1,5 +1,4 @@
 import re
-import sure  # flake8: noqa
 
 import moto.server as server
 

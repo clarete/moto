@@ -1,6 +1,5 @@
 import boto
 from boto.ec2.elb import HealthCheck
-import sure  # flake8: noqa
 
 from moto import mock_elb, mock_ec2
 
